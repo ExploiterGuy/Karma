@@ -1,0 +1,595 @@
+local MotionHub = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local GuiBottomFrame = Instance.new("Frame")
+local Credits = Instance.new("TextLabel")
+local GuiTopFrame = Instance.new("Frame")
+local CloseGUI = Instance.new("TextButton")
+local Title = Instance.new("TextLabel")
+local CheckR = Instance.new("TextLabel")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+
+
+local function debug(message)
+    print("[DEBUG] " .. message)
+end
+
+debug("Starting script")
+
+local function createGuiElement(class, properties)
+    debug("Creating GUI element: " .. class)
+    local element = Instance.new(class)
+    for k, v in pairs(properties) do
+        element[k] = v
+    end
+    debug("GUI element created: " .. class)
+    return element
+end
+
+local function createButton(name, parent, position, text)
+    debug("Creating button: " .. name)
+    local button = createGuiElement("TextButton", {
+        Name = name,
+        Parent = parent,
+        BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+        BackgroundTransparency = 0.1,
+        Position = position,
+        Size = UDim2.new(0, 90, 0, 30),
+        Font = Enum.Font.SourceSansBold,
+        Text = text,
+        TextColor3 = Color3.new(1, 1, 1),
+        TextSize = 14,
+        BorderSizePixel = 0,
+        AutoButtonColor = false
+    })
+    
+    local cornerRadius = Instance.new("UICorner")
+    cornerRadius.CornerRadius = UDim.new(0, 8)
+    cornerRadius.Parent = button
+    
+    local buttonStroke = Instance.new("UIStroke")
+    buttonStroke.Color = Color3.fromRGB(75, 75, 75)
+    buttonStroke.Thickness = 1
+    buttonStroke.Parent = button
+    
+    button.MouseEnter:Connect(function()
+        game:GetService("TweenService"):Create(button, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(60, 60, 60)}):Play()
+    end)
+    
+    button.MouseLeave:Connect(function()
+        game:GetService("TweenService"):Create(button, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
+    end)
+    
+    if button then
+        debug("Button created successfully: " .. name)
+    else
+        warn("Failed to create button: " .. name)
+    end
+    
+    return button
+end
+
+MotionHub = createGuiElement("ScreenGui", {
+    Name = "MotionHub",
+    Parent = game.CoreGui,
+    ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+})
+
+MainFrame = createGuiElement("Frame", {
+    Name = "MainFrame",
+    Parent = MotionHub,
+    Active = true,
+    Draggable = true,
+    BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+    BackgroundTransparency = 0.1,
+    Position = UDim2.new(0.502199888, 0, 0.552243114, 0),
+    Size = UDim2.new(0, 426, 0, 258),
+    ClipsDescendants = true
+})
+
+local mainFrameCorner = Instance.new("UICorner")
+mainFrameCorner.CornerRadius = UDim.new(0, 10)
+mainFrameCorner.Parent = MainFrame
+
+local mainFrameStroke = Instance.new("UIStroke")
+mainFrameStroke.Color = Color3.fromRGB(60, 60, 60)
+mainFrameStroke.Thickness = 2
+mainFrameStroke.Parent = MainFrame
+
+GuiBottomFrame = createGuiElement("Frame", {
+    Name = "Gui BottomFrame",
+    Parent = MainFrame,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0, 0, 0.901309371, 0),
+    Size = UDim2.new(0, 426, 0, 25)
+})
+
+Credits = createGuiElement("TextLabel", {
+    Name = "Credits",
+    Parent = GuiBottomFrame,
+    BackgroundTransparency = 1,
+    Size = UDim2.new(0, 426, 0, 25),
+    Font = Enum.Font.SourceSansBold,
+    Text = "Made by ocfi and a_s_t_r_o_v_e_x.",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 14
+})
+
+GuiTopFrame = createGuiElement("Frame", {
+    Name = "Gui TopFrame",
+    Parent = MainFrame,
+    BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+    BackgroundTransparency = 0.1,
+    Position = UDim2.new(0, 0, -0.00178042857, 0),
+    Size = UDim2.new(0, 426, 0, 25)
+})
+
+local topFrameCorner = Instance.new("UICorner")
+topFrameCorner.CornerRadius = UDim.new(0, 10)
+topFrameCorner.Parent = GuiTopFrame
+
+CloseGUI = createGuiElement("TextButton", {
+    Name = "CloseGUI",
+    Parent = GuiTopFrame,
+    BackgroundColor3 = Color3.fromRGB(255, 70, 70),
+    BackgroundTransparency = 0.1,
+    BorderSizePixel = 0,
+    Position = UDim2.new(0.967136145, 0, 0.1, 0),
+    Size = UDim2.new(0, 15, 0, 15),
+    Font = Enum.Font.SourceSansBold,
+    Text = "",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 14
+})
+
+local closeButtonCorner = Instance.new("UICorner")
+closeButtonCorner.CornerRadius = UDim.new(0, 15)
+closeButtonCorner.Parent = CloseGUI
+
+Title = createGuiElement("TextLabel", {
+    Name = "Title",
+    Parent = GuiTopFrame,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0.653472185, 0, 0, 0),
+    Size = UDim2.new(0, 105, 0, 25),
+    Font = Enum.Font.SourceSansBold,
+    Text = "MotionHub",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 18
+})
+
+CheckR = createGuiElement("TextLabel", {
+    Name = "CheckR",
+    Parent = GuiTopFrame,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0.0234741792, 0, 0, 0),
+    Size = UDim2.new(0, 194, 0, 24),
+    Font = Enum.Font.SourceSansBold,
+    Text = "Text",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 16,
+    TextXAlignment = Enum.TextXAlignment.Left
+})
+
+ScrollingFrame = createGuiElement("ScrollingFrame", {
+    Parent = MainFrame,
+    BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+    BackgroundTransparency = 0.5,
+    Position = UDim2.new(0, 0, 0.0951187983, 0),
+    Size = UDim2.new(0, 426, 0, 207),
+    CanvasSize = UDim2.new(0, 0, 1.29999995, 0),
+    ScrollBarThickness = 6,
+    BorderSizePixel = 0
+})
+
+local scrollingFrameCorner = Instance.new("UICorner")
+scrollingFrameCorner.CornerRadius = UDim.new(0, 8)
+scrollingFrameCorner.Parent = ScrollingFrame
+
+local buttonData = {
+    {"GlitchLevitate", UDim2.new(0.047, 0, 0.027, 0), "Glitch Levitate"},
+    {"FullSwing", UDim2.new(0.268, 0, 0.027, 0), "Full Swing"},
+    {"MoonDance", UDim2.new(0.714, 0, 0.027, 0), "Moon Dance"},
+    {"FullPunch", UDim2.new(0.493, 0, 0.027, 0), "Full Punch"},
+    {"FloorFaint", UDim2.new(0.047, 0, 0.135, 0), "Floor Faint"}
+}
+
+for _, data in ipairs(buttonData) do
+    createButton(data[1], ScrollingFrame, data[2], data[3])
+end
+
+local standardButtons = {
+    {"Crouch", UDim2.new(0.268, 0, 0.135, 0)},
+    {"SpinDance", UDim2.new(0.714, 0, 0.135, 0)},
+    {"JumpingJacks", UDim2.new(0.493, 0, 0.135, 0)},
+    {"ArmDetach", UDim2.new(0.047, 0, 0.242, 0)},
+    {"MegaInsane", UDim2.new(0.268, 0, 0.242, 0)},
+    {"WeirdMove", UDim2.new(0.714, 0, 0.242, 0)},
+    {"DinoWalk", UDim2.new(0.493, 0, 0.242, 0)},
+    {"FloorCrawl", UDim2.new(0.493, 0, 0.349, 0)},
+    {"Spinner", UDim2.new(0.268, 0, 0.349, 0)},
+    {"Faint", UDim2.new(0.714, 0, 0.349, 0)},
+    {"Levitate", UDim2.new(0.047, 0, 0.349, 0)},
+    {"LoopHead", UDim2.new(0.047, 0, 0.457, 0)},
+    {"HeadThrow", UDim2.new(0.268, 0, 0.457, 0)},
+    {"CloneIllusion", UDim2.new(0.714, 0, 0.457, 0)},
+    {"Dab", UDim2.new(0.493, 0, 0.457, 0)},
+    {"BarrelRoll", UDim2.new(0.493, 0, 0.564, 0)},
+    {"Insane", UDim2.new(0.268, 0, 0.564, 0)},
+    {"SwordSlam", UDim2.new(0.714, 0, 0.564, 0)},
+    {"MovingDance", UDim2.new(0.047, 0, 0.564, 0)},
+    {"ArmTurbine", UDim2.new(0.268, 0, 0.671, 0)},
+    {"SuperPunch", UDim2.new(0.047, 0, 0.671, 0)},
+    {"Scared", UDim2.new(0.268, 0, 0.779, 0)},
+    {"LoopSlam", UDim2.new(0.714, 0, 0.671, 0)},
+    {"HeroJump", UDim2.new(0.047, 0, 0.779, 0)},
+    {"SpinDance2", UDim2.new(0.714, 0, 0.779, 0)},
+    {"SwordSlice", UDim2.new(0.493, 0, 0.671, 0)},
+    {"FloatingHead", UDim2.new(0.493, 0, 0.779, 0)},
+    {"InsaneArms", UDim2.new(0.047, 0, 0.889, 0)},
+    {"SuperFaint", UDim2.new(0.268, 0, 0.889, 0)},
+    {"FloatSit", UDim2.new(0.493, 0, 0.889, 0)},
+    {"BowDown", UDim2.new(0.714, 0, 0.889, 0)}
+}
+
+for _, buttonInfo in ipairs(standardButtons) do
+    createButton(buttonInfo[1], ScrollingFrame, buttonInfo[2], buttonInfo[1]:gsub("(%l)(%u)", "%1 %2"))
+end
+
+local r15Buttons = {
+    {"FloatSlash", UDim2.new(0.056, 0, 0.041, 0)},
+    {"ArmsOut", UDim2.new(0.282, 0, 0.041, 0)},
+    {"DownSlash", UDim2.new(0.507, 0, 0.041, 0)},
+    {"R15Spinner", UDim2.new(0.732, 0, 0.041, 0)},
+    {"WeirdZombie", UDim2.new(0.282, 0, 0.214, 0)},
+    {"CrazySlash", UDim2.new(0.056, 0, 0.214, 0)},
+    {"Pull", UDim2.new(0.507, 0, 0.214, 0)},
+    {"Open", UDim2.new(0.732, 0, 0.214, 0)},
+    {"CircleArm", UDim2.new(0.056, 0, 0.387, 0)},
+    {"Bend", UDim2.new(0.282, 0, 0.387, 0)},
+    {"RotateSlash", UDim2.new(0.507, 0, 0.387, 0)},
+    {"FlingArms", UDim2.new(0.732, 0, 0.387, 0)}
+}
+
+ScrollingFrameR15 = createGuiElement("ScrollingFrame", {
+    Name = "ScrollingFrameR15",
+    Parent = MainFrame,
+    BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+    BackgroundTransparency = 0.5,
+    Position = UDim2.new(-0.002, 0, 0.095, 0),
+    Size = UDim2.new(0, 427, 0, 207),
+    CanvasSize = UDim2.new(0, 0, 0.43, 0),
+    ScrollBarThickness = 6,
+    BorderSizePixel = 0
+})
+
+local scrollingFrameR15Corner = Instance.new("UICorner")
+scrollingFrameR15Corner.CornerRadius = UDim.new(0, 8)
+scrollingFrameR15Corner.Parent = ScrollingFrameR15
+
+for _, buttonInfo in ipairs(r15Buttons) do
+    createButton(buttonInfo[1], ScrollingFrameR15, buttonInfo[2], buttonInfo[1]:gsub("(%l)(%u)", "%1 %2"))
+end
+
+SideFrame = createGuiElement("Frame", {
+    Name = "SideFrame",
+    Parent = MotionHub,
+    Active = true,
+    Draggable = true,
+    Visible = false,
+    BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+    BackgroundTransparency = 0.1,
+    Position = UDim2.new(0.502, 0, 0.551, 0),
+    Size = UDim2.new(0, 426, 0, 25)
+})
+
+local sideFrameCorner = Instance.new("UICorner")
+sideFrameCorner.CornerRadius = UDim.new(0, 10)
+sideFrameCorner.Parent = SideFrame
+
+local sideFrameStroke = Instance.new("UIStroke")
+sideFrameStroke.Color = Color3.fromRGB(60, 60, 60)
+sideFrameStroke.Thickness = 2
+sideFrameStroke.Parent = SideFrame
+
+OpenGUI = createGuiElement("TextButton", {
+    Name = "OpenGUI",
+    Parent = SideFrame,
+    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+    BackgroundTransparency = 0.1,
+    BorderSizePixel = 0,
+    Position = UDim2.new(0.967, 0, 0, 0),
+    Size = UDim2.new(0, 15, 0, 15),
+    Font = Enum.Font.SourceSansBold,
+    Text = "X",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 14
+})
+
+local openButtonCorner = Instance.new("UICorner")
+openButtonCorner.CornerRadius = UDim.new(0, 15)
+openButtonCorner.Parent = OpenGUI
+
+SideFrameTitle = createGuiElement("TextLabel", {
+    Name = "SideFrameTitle",
+    Parent = SideFrame,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0.365, 0, 0, 0),
+    Size = UDim2.new(0, 115, 0, 25),
+    Font = Enum.Font.SourceSansBold,
+    Text = "MotionHub",
+    TextColor3 = Color3.new(1, 1, 1),
+    TextSize = 16
+})
+
+-- Scripts:
+local colors = {
+    default = Color3.fromRGB(45, 45, 45),
+    active = Color3.fromRGB(255, 117, 19)
+}
+
+local function toggleAnimation(button, animId, loopCount, speed)
+    if not button then
+        warn("Button is nil for animation with ID: " .. animId)
+        return
+    end
+    
+    debug("Setting up animation toggle for button: " .. button.Name)
+    local active = false
+    local humanoid = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    debug("Humanoid found")
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animId
+    debug("Animation created with ID: " .. animId)
+    local track
+    
+    pcall(function()
+        track = humanoid:LoadAnimation(animation)
+        debug("Animation loaded successfully")
+    end)
+    
+    if not track then
+        warn("Failed to load animation for button: " .. button.Name)
+        return
+    end
+    
+    if button and button.MouseButton1Click then
+        button.MouseButton1Click:Connect(function()
+            debug("Button clicked: " .. button.Name)
+            active = not active
+            game:GetService("TweenService"):Create(button, TweenInfo.new(0.3), {BackgroundColor3 = active and colors.active or colors.default}):Play()
+            
+            if active then
+                debug("Attempting to play animation")
+                pcall(function()
+                    track:Play(0.1, 1, speed or 1)
+                    debug("Animation played successfully")
+                end)
+                if loopCount then
+                    spawn(function()
+                        while active do
+                            if not track.IsPlaying then 
+                                pcall(function()
+                                    track:Play(0.1, 1, speed or 1)
+                                    debug("Animation loop played")
+                                end)
+                            end
+                            wait()
+                            if type(loopCount) == "number" then
+                                loopCount = loopCount - 1
+                                if loopCount <= 0 then break end
+                            end
+                        end
+                    end)
+                end
+            else
+                debug("Stopping animation")
+                pcall(function()
+                    track:Stop()
+                    debug("Animation stopped successfully")
+                end)
+            end
+        end)
+    else
+        warn("Button or MouseButton1Click event is nil for: " .. button.Name)
+    end
+end
+
+CloseGUI.MouseButton1Click:Connect(function()
+    debug("CloseGUI clicked")
+    MainFrame.Visible, SideFrame.Visible = false, true
+    SideFrame.Position = MainFrame.Position
+end)
+
+OpenGUI.MouseButton1Click:Connect(function()
+    debug("OpenGUI clicked")
+    MainFrame.Visible, SideFrame.Visible = true, false
+    MainFrame.Position = SideFrame.Position
+end)
+
+local isR15 = game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").RigType == Enum.HumanoidRigType.R15
+debug("Character rig type: " .. (isR15 and "R15" or "R6"))
+ScrollingFrame.Visible, ScrollingFrameR15.Visible = not isR15, isR15
+CheckR.Text = "Showing " .. (isR15 and "R15" or "R6") .. " Animations"
+
+local function getButton(name)
+    return ScrollingFrame:FindFirstChild(name) or ScrollingFrameR15:FindFirstChild(name)
+end
+
+local animations = {
+    {getButton("HeadThrow"), "35154961", true},
+    {getButton("FloatingHead"), "121572214"},
+    {getButton("Crouch"), "182724289"},
+    {getButton("FloorCrawl"), "282574440"},
+    {getButton("DinoWalk"), "204328711"},
+    {getButton("JumpingJacks"), "429681631"},
+    {getButton("LoopHead"), "35154961", true},
+    {getButton("HeroJump"), "184574340", true},
+    {getButton("Faint"), "181526230"},
+    {getButton("FloorFaint"), "181525546", true, 2},
+    {getButton("SuperFaint"), "181525546", true, 40},
+    {getButton("Levitate"), "313762630"},
+    {getButton("Dab"), "183412246", true},
+    {getButton("Spinner"), "188632011", true, 2},
+    {getButton("FloatSit"), "179224234"},
+    {getButton("MovingDance"), "429703734", true},
+    {getButton("WeirdMove"), "215384594"},
+    {getButton("CloneIllusion"), "215384594", false, 1e7},
+    {getButton("GlitchLevitate"), "313762630", false, 1e7},
+    {getButton("SpinDance"), "429730430", true},
+    {getButton("MoonDance"), "45834924", true},
+    {getButton("FullPunch"), "204062532", true},
+    {getButton("SpinDance2"), "186934910", true},
+    {getButton("BowDown"), "204292303", true, 3},
+    {getButton("SwordSlam"), "204295235", true},
+    {getButton("LoopSlam"), "204295235", true, 1e4},
+    {getButton("MegaInsane"), "184574340", true, 40},
+    {getButton("SuperPunch"), "126753849", true, 3},
+    {getButton("FullSwing"), "218504594"},
+    {getButton("ArmTurbine"), "259438880", false, 1e3},
+    {getButton("BarrelRoll"), "136801964"},
+    {getButton("Insane"), "33796059", false, 1e8},
+    {getButton("ArmDetach"), "33169583", true, 1e6},
+    {getButton("SwordSlice"), "35978879"},
+    {getButton("InsaneArms"), "27432691", true, 1e4},
+    {getButton("CrazySlash"), "674871189"},
+    {getButton("Open"), "582855105"},
+    {getButton("R15Spinner"), "754658275"},
+    {getButton("ArmsOut"), "582384156"},
+    {getButton("FloatSlash"), "717879555"},
+    {getButton("WeirdZombie"), "708553116"}
+}
+
+for _, anim in ipairs(animations) do
+    if anim[1] then
+        debug("Setting up animation: " .. anim[1].Name)
+        toggleAnimation(unpack(anim))
+    else
+        warn("Animation button not found for: " .. tostring(anim[2]))
+    end
+end
+
+local Scared = getButton("Scared")
+if Scared and Scared.MouseButton1Click then
+    debug("Setting up Scared animation")
+    Scared.MouseButton1Click:Connect(function()
+        local active = Scared.BackgroundColor3 ~= colors.active
+        game:GetService("TweenService"):Create(Scared, TweenInfo.new(0.3), {BackgroundColor3 = active and colors.active or colors.default}):Play()
+        
+        local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+        if not humanoid then
+            warn("Humanoid not found for Scared animation")
+            return
+        end
+        
+        local animation = Instance.new("Animation")
+        animation.AnimationId = "rbxassetid://180612465"
+        local track
+        
+        pcall(function()
+            track = humanoid:LoadAnimation(animation)
+            debug("Scared animation loaded successfully")
+        end)
+        
+        if not track then
+            warn("Failed to load Scared animation")
+            return
+        end
+        
+        if active then
+            debug("Playing Scared animation")
+            pcall(function()
+                track:Play(0.1, 1, 1)
+                debug("Scared animation played successfully")
+            end)
+            wait(1)
+            humanoid.Sit = true
+            wait(0.1)
+            track:AdjustSpeed(0)
+        else
+            debug("Stopping Scared animation")
+            pcall(function()
+                track:Stop()
+                debug("Scared animation stopped successfully")
+            end)
+            humanoid.Sit = false
+        end
+    end)
+else
+    warn("Scared button not found or not properly set up")
+end
+
+local function createLoopAnimation(button, animId, speed)
+    if not button or not button.Parent then
+        warn("Button is nil or not parented for animation ID: " .. animId)
+        return
+    end
+    
+    debug("Setting up loop animation for button: " .. button.Name)
+    local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+    if not humanoid then
+        warn("Humanoid not found for loop animation: " .. button.Name)
+        return
+    end
+    
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. animId
+    local track
+    
+    pcall(function()
+        track = humanoid:LoadAnimation(animation)
+        debug("Loop animation loaded successfully")
+    end)
+    
+    if not track then
+        warn("Failed to load loop animation for button: " .. button.Name)
+        return
+    end
+    
+    local active = false
+    
+    button.MouseButton1Click:Connect(function()
+        debug("Loop animation button clicked: " .. button.Name)
+        active = not active
+        game:GetService("TweenService"):Create(button, TweenInfo.new(0.3), {BackgroundColor3 = active and colors.active or colors.default}):Play()
+        
+        if active then
+            spawn(function()
+                while active and button and button.Parent do
+                    if not track.IsPlaying then 
+                        pcall(function()
+                            track:Play(0.1, 1, speed or 1)
+                            debug("Loop animation played")
+                        end)
+                    end
+                    wait()
+                end
+            end)
+        else
+            debug("Stopping loop animation")
+            pcall(function()
+                track:Stop()
+                debug("Loop animation stopped successfully")
+            end)
+        end
+    end)
+end
+
+local loopAnimations = {
+    {getButton("DownSlash"), "746398327"},
+    {getButton("Pull"), "675025795"},
+    {getButton("CircleArm"), "698251653"},
+    {getButton("Bend"), "696096087"},
+    {getButton("RotateSlash"), "675025570"},
+    {getButton("FlingArms"), "754656200", 10}
+}
+
+for _, anim in ipairs(loopAnimations) do
+    if anim[1] then
+        debug("Setting up loop animation: " .. anim[1].Name)
+        createLoopAnimation(unpack(anim))
+    else
+        warn("Loop animation button not found for: " .. tostring(anim[2]))
+    end
+end
+
+debug("Script finished loading")
